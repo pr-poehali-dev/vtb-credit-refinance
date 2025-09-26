@@ -40,9 +40,9 @@ const Index = () => {
     }
   }, [state]);
 
-  // Countdown timer for payment screen
+  // Countdown timer (starts immediately for loading and continues for payment)
   useEffect(() => {
-    if (state === 'payment') {
+    if (state === 'loading' || state === 'payment') {
       const timer = setInterval(() => {
         setCountdown(prev => {
           if (prev <= 1) {
@@ -124,7 +124,14 @@ const Index = () => {
               </div>
               
               <div className="space-y-4">
-                <Progress value={loadingProgress} className="w-full" />
+                <div className="flex justify-center mb-4">
+                  <div className="relative w-16 h-16">
+                    <div className="absolute inset-0 border-4 border-payment-blue/20 rounded-full"></div>
+                    <div className="absolute inset-0 border-4 border-transparent border-t-payment-blue rounded-full animate-spin"></div>
+                    <div className="absolute inset-2 border-2 border-payment-blue/30 rounded-full"></div>
+                    <div className="absolute inset-2 border-2 border-transparent border-t-payment-blue/60 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.8s' }}></div>
+                  </div>
+                </div>
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-2 h-2 bg-payment-blue rounded-full animate-pulse" />
                   <div className="w-2 h-2 bg-payment-blue rounded-full animate-pulse" style={{ animationDelay: '0.2s' }} />

@@ -21,18 +21,21 @@ const Index = () => {
   // Loading animation
   useEffect(() => {
     if (state === 'loading') {
-      const duration = Math.random() * 5000 + 10000; // 10-15 seconds
+      const duration = Math.random() * 7000 + 8000; // 8-15 seconds
+      const startTime = Date.now();
+      
       const interval = setInterval(() => {
-        setLoadingProgress(prev => {
-          const newProgress = prev + (100 / (duration / 100));
-          if (newProgress >= 100) {
-            clearInterval(interval);
-            setState('payment');
-            return 100;
-          }
-          return newProgress;
-        });
-      }, 100);
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min((elapsed / duration) * 100, 100);
+        
+        setLoadingProgress(progress);
+        
+        if (progress >= 100) {
+          clearInterval(interval);
+          setState('payment');
+        }
+      }, 50);
+      
       return () => clearInterval(interval);
     }
   }, [state]);
@@ -129,13 +132,11 @@ const Index = () => {
                 </div>
               </div>
               
-              {countdown < 120 && (
-                <div className="mt-4 p-3 bg-payment-blue-light rounded-lg">
-                  <p className="text-sm text-payment-dark">
-                    Осталось времени: <span className="font-mono font-bold">{formatTime(countdown)}</span>
-                  </p>
-                </div>
-              )}
+              <div className="mt-4 p-3 bg-payment-blue-light rounded-lg">
+                <p className="text-sm text-payment-dark">
+                  Осталось времени: <span className="font-mono font-bold">{formatTime(countdown)}</span>
+                </p>
+              </div>
             </Card>
           )}
 
